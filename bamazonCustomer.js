@@ -53,25 +53,51 @@ var start = function () {
                     var chosenItem = res[i];
                 }
             }
-            connection.query("SELECT stock_quantity FROM products WHERE ?", {product_name: chosenItem}, function (err, res){
-                if (res.stock_quantity <= parseInt(answers.quantity)) {
+            // check if inventory is enough for order 
+            connection.query("SELECT stock_quantity, price FROM products WHERE ?", { product_name: chosenItem.product_name }, function (err, data) {
+                if (err) throw err;
+
+                if (chosenItem.stock_quantity >= parseInt(answers.quantity)) {
+                    //update database with new stock quantity 
                     connection.query("UPDATE products SET ? WHERE ?", [{
-                        stock_quantity: (stock_quantity -= answers.quantity)
+                        stock_quantity: (chosenItem.stock_quantity -= answers.quantity)
                     }, {
-                        product_name: chosenItem
+                        product_name: chosenItem.product_name
                     }], function (err, res) {
                         if (err) throw err;
-                        console.log("TOTAL NEEDED");
+                        //total purchase price 
+                        totalPrice(chosenItem.price, answers.quantity);
+
                     });
                 } else {
-                    console.log("We don't have that much in stock! Try a lower number please");
+                    // if not, alert the user and prevent the order 
+                    console.log("We don't have that much in stock! Try a different purchase please.");
+                    start();
                 }
             })
 
         })
-            // check if inventory is enough for order 
-            // if not, alert the user and prevent the order 
-            // otherwise, allow the order and update the SQL database inventory
-            // alert the total purchase price to customer
-        });
+
+    });
 }
+
+var totalPrice = function (price, quantity) {
+    var total = price * quantity;
+    console.log(`Thanks for you purchase! Your total is: $${total}`);
+
+    inquirer.prompt(
+        // ask if that will be all for them today
+        {
+            name: "continue",
+            type: "confirm",
+            message: "Will that be all for you today?",
+            default: true
+    }).then (function(answer){
+        if (answer.continue) {
+            connection.end();
+        } else{
+            start();
+        }
+    });
+}
+
