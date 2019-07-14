@@ -15,7 +15,6 @@
 * Will also update the database to show the new stock quantity
 
 ![](/gifs/buy2chemex.gif)
-![](/gifs/buysomething.gif)
 ![](/gifs/toomuch.gif)
 ![](/gifs/mySqlUpdate.gif)
 
