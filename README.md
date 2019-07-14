@@ -14,7 +14,8 @@
 * If there is enough stock, you will then be shown your total purchase price and asked if that will be all for you today
 * Will also update the database to show the new stock quantity
 
-![](gifs/spotify-this-song.gif)
+![](Beginning.mp4)
+![](mySqlUpdate.gif)
 
 ## Bamazon Manager Side 
 
@@ -29,23 +30,26 @@
 
 **Bamazon will then do the following:**
 
-*View products for sale*
-*The app will list all the products for sale in a table format
+*View products for sale* --
+The app will list all the products for sale in a table format
 
-*View low inventory*
-*The app will list all products with less than 5 stocked
+*View low inventory* --
+The app will list all products with less than 5 stocked -- 
+    *Notice the amount of scales in this example is 1, we will update that one in the next step.
 
-*Add to inventory*
-*The app will ask what item you would like to add inventory for
-*It will update the database to show the new amounts
+*Add to inventory* --
+The app will ask what item you would like to add inventory for and will update the database to show the new amounts
 
-*Add new product*
-*The app will ask what new item you would like to add, including it's name, department name, price and stock quantity
-*It will then update the database to show the new item 
+*Add new product* --
+The app will ask what new item you would like to add, including it's name, department name, price and stock quantity and will then update the database to show the new item 
+    *In this example, let's add a new ceramic coffee mug.
 
 ### Technologies Used
 NodeJS, JavaScript, MySQL, Inquirer, Bash
 
-### To Get Started Using Liri
+### To Get Started Using Bamazon
 Clone this repository and navigate to the bamazon file in your Terminal or Bash! Using Node and the applicable .js file (bamazonCustomer.js or bamazonManager.js) and get to shopping and stocking!
+
+
+
 
