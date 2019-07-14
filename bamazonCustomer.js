@@ -1,6 +1,8 @@
+//DEPENDENCIES------------------------------------
 var inquirer = require("inquirer");
 var mysql = require("mysql");
 
+//CONNECTION VARIABLE-----------------------------
 var connection = mysql.createConnection({
     host: "localhost",
     port: 8889,
@@ -80,6 +82,8 @@ var start = function () {
 
     });
 }
+
+//TALLY UP THE TOTAL PRICE-------------------------------
 
 var totalPrice = function (price, quantity) {
     var total = price * quantity;

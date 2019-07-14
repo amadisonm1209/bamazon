@@ -1,6 +1,8 @@
+//DEPENDENCIES---------------------------------------
 var inquirer = require("inquirer");
 var mysql = require("mysql");
 
+//CONNECTION VARIABLE--------------------------------
 var connection = mysql.createConnection({
     host: "localhost",
     port: 8889,
@@ -16,12 +18,13 @@ connection.connect(function (err) {
     managerMenu();
 });
 
+//MAIN MENU------------------------------------------
 var managerMenu = function () {
     inquirer.prompt({
         name: "action",
         message: "What would you like to do today?",
         type: "list",
-        choice: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product"]
+        choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product", "Exit"]
     }).then(function (answer) {
 
         switch (answer.action) {
@@ -39,8 +42,10 @@ var managerMenu = function () {
     })
 }
 
+//FUNCTIONS--------------------------------------
+
 function viewAll() {
-    connection.query("SELECT * FROM products", function (err, res) {
+    connection.query("SELECT product_name, department_name, stock_quantity, price FROM products", function (err, res) {
         if (err) throw err;
 
         console.table(res);
@@ -49,7 +54,7 @@ function viewAll() {
 };
 
 function viewLowInventory() {
-    connection.query("SELECT * FROM products WHERE stock_quantity < 5", function (err, data) {
+    connection.query("SELECT product_name, stock_quantity FROM products WHERE stock_quantity < 5", function (err, data) {
         if (err) throw err;
         console.table(data)
         managerMenu();
@@ -57,7 +62,49 @@ function viewLowInventory() {
 };
 
 function addInventory() {
+    connection.query("SELECT * FROM products", function(err, data){
+        if (err) throw err;
 
+        inquirer.prompt([
+            {
+                message: "What product would you like to stock?",
+                name: "item",
+                type: "list",
+                choices: function (){
+                    var items = data.map(function(item){
+                        return item.product_name;
+                    });
+
+                    return items;
+                }
+            },{
+                message: "How many would you like to add?",
+                name: "amount",
+                validate: function (input) {
+                    if (isNaN(input) || parseInt(input)<1) {
+                        return "Please put a number for how many items you would like to stock."
+                    } return true;
+                }
+            }]).then(function(answers) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].product_name === answers.item) {
+                        var chosenItem = data[i];
+                    }
+                }
+                
+            connection.query("UPDATE products SET ? WHERE ?", [{
+                stock_quantity: (chosenItem.stock_quantity += parseInt(answers.amount))
+            },{
+                product_name: answers.item
+            }], function (err){
+                if (err) throw err;
+                console.log(`Updated ${answers.item} inventory`)
+
+                managerMenu();
+            })
+        })
+        
+    })
 };
 
 function addProduct() {
@@ -82,7 +129,7 @@ function addProduct() {
             name: "stock",
             validate: function (input) {
                 if (isNaN(input)) {
-                    return "Please put a number for how many item's you would like to stock."
+                    return "Please put a number for how many items you would like to stock."
                 } return true;
             }
         }
@@ -106,7 +153,6 @@ function addProduct() {
 }
 
 
-// If Add to Inventory, your app should display a prompt that will let the manager "add more" of any item currently in the store
 
 
 
