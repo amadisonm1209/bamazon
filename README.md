@@ -14,8 +14,10 @@
 * If there is enough stock, you will then be shown your total purchase price and asked if that will be all for you today
 * Will also update the database to show the new stock quantity
 
-![](Beginning.mp4)
-![](mySqlUpdate.gif)
+![](/gifs/buy2chemex.gif)
+![](/gifs/buysomething.gif)
+![](/gifs/toomuch.gif)
+![](/gifs/mySqlUpdate.gif)
 
 ## Bamazon Manager Side 
 
@@ -33,16 +35,24 @@
 *View products for sale* --
 The app will list all the products for sale in a table format
 
+![](/gifs/viewallproducts.gif)
+
 *View low inventory* --
 The app will list all products with less than 5 stocked -- 
     *Notice the amount of scales in this example is 1, we will update that one in the next step.
+    ![](/gifs/lowinventory.gif)
+
 
 *Add to inventory* --
 The app will ask what item you would like to add inventory for and will update the database to show the new amounts
+![](/gifs/addinventory.gif)
+
 
 *Add new product* --
 The app will ask what new item you would like to add, including it's name, department name, price and stock quantity and will then update the database to show the new item 
     *In this example, let's add a new ceramic coffee mug.
+![](/gifs/addnewitem.gif)
+
 
 ### Technologies Used
 NodeJS, JavaScript, MySQL, Inquirer, Bash
